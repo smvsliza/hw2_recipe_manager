@@ -70,3 +70,56 @@ class Recipe:
         """Возвращает читаемое представление рецепта."""
         ingredients = "\n".join(f"{ingr}" for ingr in self.ingredients)
         return f"Рецепт: {self.title}\n{ingredients}"
+    
+
+class ShoppingList:
+    """Представляет список покупок, объединяющий ингредиенты из нескольких рецептов."""
+
+    def __init__(self):
+        self._items = []
+
+    @staticmethod
+    def _get_name(ingredient):
+        """Вспомогательная функция для сортировки по названию ингредиента."""
+        return ingredient.name
+
+    def add_recipe(self, recipe: Recipe, portions: float):
+        """Добавляет масштабированный рецепт в список покупок."""
+        if portions <= 0:
+            raise ValueError("Количество порций должно быть положительным")
+        
+        scaled = recipe.scale(portions)
+        for ingr in scaled.ingredients:
+            self._items.append((ingr, recipe.title))
+
+    def remove_recipe(self, title: str):
+        """Удаляет все ингредиенты, относящиеся к рецепту с указанным названием."""
+        self._items = [
+            (ingr, rec_title) 
+            for ingr, rec_title in self._items 
+            if rec_title != title
+        ]
+
+    def get_list(self) -> list:
+        """Возвращает итоговый отсортированный список ингредиентов."""
+        totals = {}
+        for ingr, _ in self._items:
+            key = (ingr.name, ingr.unit)
+            if key in totals:
+                totals[key] += ingr.quantity
+            else:
+                totals[key] = ingr.quantity
+        
+        result = [
+            Ingredient(name, quantity, unit)
+            for (name, unit), quantity in totals.items()
+        ]
+        
+        result.sort(key=ShoppingList._get_name)
+        return result
+
+    def __add__(self, other: 'ShoppingList') -> 'ShoppingList':
+        """Объединяет два списка покупок, не изменяя исходные."""
+        new_list = ShoppingList()
+        new_list._items = self._items + other._items
+        return new_list
