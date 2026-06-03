@@ -27,8 +27,8 @@
 Проект разворачивается из чистого клона репозитория следующими командами:
 
 ```bash
-git clone <ссылка на репозиторий>
-cd <папка с проектом>
+git clone https://github.com/smvliza/hw2_recipe_manager.git
+cd hw2_recipe_manager
 python -m venv venv
 source venv/bin/activate        # для Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -72,10 +72,10 @@ for item in shopping.get_list():
 pytest
 ```
 
-Для подробного вывода:
+Или с помощью внутреннего встроенного тестирования:
 
 ```bash
-pytest -v
+python -m unittest test_recipes.py
 ```
 
 ## Автор
