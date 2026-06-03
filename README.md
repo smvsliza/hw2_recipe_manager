@@ -45,24 +45,35 @@ pip install -r requirements.txt
 ```python
 from recipes import Ingredient, Recipe, DietaryRecipe, ShoppingList
 
-# Создаём ингредиенты
-flour = Ingredient("Мука", 500, "г")
-eggs = Ingredient("Яйца", 2, "шт")
+# Создаём ингредиенты для йогурт-боула
+yogurt = Ingredient("Греческий йогурт", 200, "г")
+coconut_milk = Ingredient("Кокосовое молоко", 100, "мл")
+banana = Ingredient("Банан", 1, "шт")
+granola = Ingredient("Гранола", 50, "г")
 
-# Собираем рецепт
-pancakes = Recipe("Блины", [flour, eggs])
-pancakes.add_ingredient(Ingredient("Молоко", 500, "мл"))
+# Создаём диетический рецепт йогурт-боула
+yogurt_bowl = DietaryRecipe("Йогурт-боул", "веган", [yogurt, coconut_milk, banana])
+yogurt_bowl.add_ingredient(granola)
+print(yogurt_bowl)
 
-# Масштабируем на 3 порции
-big_batch = pancakes.scale(3)
-print(big_batch)
+# Создаём рецепт матчи
+matcha = Recipe("Матча", [coconut_milk])
+matcha.add_ingredient(Ingredient("Матча", 5, "г"))
 
-# Формируем список покупок
+# Масштабируем матчу на 2 порции
+big_matcha = matcha.scale(2)
+print(big_matcha)
+
+# Формируем список покупок для обоих рецептов
 shopping = ShoppingList()
-shopping.add_recipe(pancakes, portions=2)
+shopping.add_recipe(yogurt_bowl, portions=1)
+shopping.add_recipe(matcha, portions=2)
+
+# Выводим итоговый список (кокосовое молоко просуммируется!)
 for item in shopping.get_list():
     print(item)
 ```
+
 
 ### Запуск тестов
 
