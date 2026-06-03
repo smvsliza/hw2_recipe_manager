@@ -83,11 +83,5 @@ for item in shopping.get_list():
 pytest
 ```
 
-Или с помощью внутреннего встроенного тестирования:
-
-```bash
-python -m unittest test_recipes.py
-```
-
 ## Автор
 Волкова Елизавета, ББИ2509, НИУ ВШЭ, ВШБ БИ
